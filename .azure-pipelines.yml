@@ -1,0 +1,34 @@
+trigger:
+- experiment/pipeline
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  solution: 'EarTrumpet.vs15.sln'
+  buildPlatform: 'x86'
+  buildConfiguration: 'Release'
+  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\'
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Install NuGet Tooling'
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet Packages'
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: MSBuild@1
+  displayName: 'Build EarTrumpet package'
+  inputs:
+    solution: 'EarTrumpet.Package\EarTrumpet.Package.wapproj'
+    platform: 'x86'
+    configuration: '$(buildConfiguration)'
+    msbuildArguments: '/p:AppxPackageSigningEnabled=false'
+    maximumCpuCount: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.artifactStagingDirectory)'
+    artifactName: 'Artifacts'
