@@ -19,6 +19,14 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: PowerShell@2
+  displayName: 'Set Bugsnag API Key'
+  inputs:
+   targetType: inline
+   script: |
+     $cfg = Get-Content ".\EarTrumpet\app.config"
+     $cfg | ForEach-Object { $_.Replace("{bugsnag.apikey}", "$(bugsnag.apikey)") } | Set-Content ".\EarTrumpet\app.config"
+
 - task: MSBuild@1
   displayName: 'Build EarTrumpet package'
   inputs:
