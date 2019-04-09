@@ -36,6 +36,11 @@ steps:
     msbuildArguments: '/p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=Sideload'
     maximumCpuCount: true
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.artifactStagingDirectory)'
+    artifactName: 'Sideload'
+
 - task: MSBuild@1
   displayName: 'Build EarTrumpet package (Store)'
   inputs:
@@ -48,4 +53,4 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: '$(Build.artifactStagingDirectory)'
-    artifactName: 'Artifacts'
+    artifactName: 'StoreUpload'
