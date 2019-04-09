@@ -28,7 +28,16 @@ steps:
      $cfg | ForEach-Object { $_.Replace("{bugsnag.apikey}", "$(bugsnag.apikey)") } | Set-Content ".\EarTrumpet\app.config"
 
 - task: MSBuild@1
-  displayName: 'Build EarTrumpet package'
+  displayName: 'Build EarTrumpet package (Sideload)'
+  inputs:
+    solution: 'EarTrumpet.Package\EarTrumpet.Package.wapproj'
+    platform: 'x86'
+    configuration: '$(buildConfiguration)'
+    msbuildArguments: '/p:AppxPackageSigningEnabled=false /p:UapAppxPackageBuildMode=Sideload'
+    maximumCpuCount: true
+
+- task: MSBuild@1
+  displayName: 'Build EarTrumpet package (Store)'
   inputs:
     solution: 'EarTrumpet.Package\EarTrumpet.Package.wapproj'
     platform: 'x86'
