@@ -58,6 +58,7 @@ namespace EarTrumpet.UI.Services
 
             error.Metadata.AddToTab("AppSettings", "IsLightTheme", GetNoError(() => SystemSettings.IsLightTheme));
             error.Metadata.AddToTab("AppSettings", "IsSystemLightTheme", GetNoError(() => SystemSettings.IsSystemLightTheme));
+            error.Metadata.AddToTab("AppSettings", "IsHighContrast", GetNoError(() => SystemParameters.HighContrast));
             error.Metadata.AddToTab("AppSettings", "IsRTL", GetNoError(() => SystemSettings.IsRTL));
             error.Metadata.AddToTab("AppSettings", "IsTransparencyEnabled", GetNoError(() => SystemSettings.IsTransparencyEnabled));
             error.Metadata.AddToTab("AppSettings", "Culture", GetNoError(() => CultureInfo.CurrentCulture.Name));

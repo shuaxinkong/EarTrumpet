@@ -33,6 +33,7 @@ namespace EarTrumpet.UI.Services
             allText += $"IsTransparencyEnabled: {SystemSettings.IsTransparencyEnabled}" + Environment.NewLine;
             allText += $"UseAccentColor: {SystemSettings.UseAccentColor}" + Environment.NewLine;
             allText += $"AnimationsEnabled: {SystemParameters.MenuAnimation}" + Environment.NewLine;
+            allText += $"HighContrast: {SystemParameters.HighContrast}" + Environment.NewLine;
             allText += Environment.NewLine;
             allText += AppTrace.GetLogText();
 
