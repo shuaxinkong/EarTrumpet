@@ -8,6 +8,8 @@ variables:
   solution: 'EarTrumpet.vs15.sln'
   buildPlatform: 'x86'
   buildConfiguration: 'Release'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  prebuild.sign-eartrumpet: 'AzureSignTool sign -kvu https://withinnetwork.vault.azure.net -fd sha256 -kvi "$(keyvault.clientid)" -kvs "$(keyvault.secret)" -kvc "$(keyvault.certificates.selfsigned.name)" -tr "$(keyvault.services.timestamp)" Build/$(buildConfiguration)/Eartrumpet.exe'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -42,21 +44,14 @@ steps:
     msbuildArguments: ''
     maximumCpuCount: true
 
-- task: CmdLine@2
-  displayName: 'Sign EarTrumpet artifact'
-  inputs:
-    script: |
-      AzureSignTool sign -kvu https://withinnetwork.vault.azure.net -fd sha256 -kvi "$(keyvault.clientid)" -kvs "$(keyvault.secret)" -kvc "$(keyvault.certificates.selfsigned.name)" -tr "$(keyvault.services.timestamp)" Build/$(buildConfiguration)/Eartrumpet.exe
-
 - task: MSBuild@1
   displayName: 'Build EarTrumpet packages'
   inputs:
     solution: 'EarTrumpet.Package\\EarTrumpet.Package.wapproj'
     platform: 'x86'
     configuration: '$(buildConfiguration)'
-    msbuildArguments: '/p:AppxPackageDir="$(Build.ArtifactStagingDirectory)" /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=Sideload'
+    msbuildArguments: '/p:PreBuildEvent="$(prebuild.sign-eartrumpet)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)" /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=Sideload'
     maximumCpuCount: true
-    clean: false
 
 - task: PublishBuildArtifacts@1
   inputs:
