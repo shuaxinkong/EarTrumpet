@@ -41,7 +41,7 @@ steps:
     solution: 'EarTrumpet.Package\\EarTrumpet.Package.wapproj'
     platform: 'x86'
     configuration: '$(buildConfiguration)'
-    msbuildArguments: '"/p:BeforeBuild=$(prebuild.sign-eartrumpet)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)" /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=Sideload'
+    msbuildArguments: '/p:PreBuildEvent="$(prebuild.sign-eartrumpet)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)" /p:AppxPackageSigningEnabled=true /p:UapAppxPackageBuildMode=Sideload'
     maximumCpuCount: true
 
 - task: PublishBuildArtifacts@1
