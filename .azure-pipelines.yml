@@ -20,7 +20,7 @@ steps:
   inputs:
     command: custom
     custom: 'tool'
-    arguments: 'install --tool-path %temp% azuresigntool'
+    arguments: 'install --tool-path . azuresigntool'
 
 - task: NuGetCommand@2
   displayName: 'Restore NuGet Packages'
