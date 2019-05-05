@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace EarTrumpet.UI.ViewModels
@@ -32,7 +33,7 @@ namespace EarTrumpet.UI.ViewModels
         public ViewState State { get; private set; }
         public ObservableCollection<DeviceViewModel> Devices { get; private set; }
         public RelayCommand ExpandCollapse { get; private set; }
-        public FlyoutShowOptions ShowOptions { get; private set; }
+        public InputType LastInput { get; private set; }
 
         private readonly DeviceCollectionViewModel _mainViewModel;
         private readonly DispatcherTimer _hideTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
@@ -53,7 +54,7 @@ namespace EarTrumpet.UI.ViewModels
             ExpandCollapse = new RelayCommand(() =>
             {
                 IsExpandingOrCollapsing = true;
-                BeginClose();
+                BeginClose(LastInput);
             });
         }
 
@@ -231,7 +232,7 @@ namespace EarTrumpet.UI.ViewModels
             }
             else
             {
-                BeginClose();
+                BeginClose(InputType.Keyboard);
             }
         }
 
@@ -250,7 +251,7 @@ namespace EarTrumpet.UI.ViewModels
                     if (_closedDuringOpen)
                     {
                         _closedDuringOpen = false;
-                        BeginClose();
+                        BeginClose(InputType.Command);
                     }
                     break;
                 case ViewState.Closing_Stage1:
@@ -265,7 +266,7 @@ namespace EarTrumpet.UI.ViewModels
                     {
                         IsExpandingOrCollapsing = false;
                         DoExpandCollapse();
-                        BeginOpen();
+                        BeginOpen(LastInput);
                     }
                     break;
             }
@@ -314,18 +315,20 @@ namespace EarTrumpet.UI.ViewModels
             }
         }
 
-        public void BeginOpen()
+        public void BeginOpen(InputType inputType)
         {
             if (State == ViewState.Hidden)
             {
+                LastInput = inputType;
                 ChangeState(ViewState.Opening);
             }
         }
 
-        public void BeginClose()
+        public void BeginClose(InputType inputType)
         {
             if (State == ViewState.Open)
             {
+                LastInput = inputType;
                 ChangeState(ViewState.Closing_Stage1);
             }
             else if (State == ViewState.Opening)
@@ -334,17 +337,15 @@ namespace EarTrumpet.UI.ViewModels
             }
         }
 
-        public void OpenFlyout(FlyoutShowOptions options)
+        public void OpenFlyout(InputType inputType)
         {
-            ShowOptions = options;
-
             switch (State)
             {
                 case ViewState.Hidden:
-                    BeginOpen();
+                    BeginOpen(inputType);
                     break;
                 case ViewState.Open:
-                    BeginClose();
+                    BeginClose(inputType);
                     break;
             }
         }

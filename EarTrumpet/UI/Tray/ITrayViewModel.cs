@@ -18,5 +18,6 @@ namespace EarTrumpet.UI.Tray
         string ToolTip { get; }
         Icon TrayIcon { get; }
         void Refresh();
+        void OnMouseWheel(int delta);
     }
 }

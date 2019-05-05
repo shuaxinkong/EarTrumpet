@@ -161,6 +161,14 @@ namespace EarTrumpet.UI.Tray
             UpdateTrayIcon();
         }
 
+        public void OnMouseWheel(int delta)
+        {
+            if (_defaultDevice != null)
+            {
+                _defaultDevice.Volume += Math.Sign(delta) * 2;
+            }
+        }
+
         private void DeviceManager_DefaultDeviceChanged(object sender, DeviceViewModel newDefaultDevice)
         {
             if (_defaultDevice != null)

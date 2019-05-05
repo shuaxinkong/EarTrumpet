@@ -125,8 +125,8 @@ namespace EarTrumpet.Interop
         [StructLayout(LayoutKind.Sequential)]
         internal struct RAWINPUTDEVICE
         {
-            public ushort usUsagePage;
-            public ushort usUsage;
+            public User32.HidUsagePage usUsagePage;
+            public User32.HidUsage usUsage;
             public uint dwFlags;
             public IntPtr hwndTarget;
         };
@@ -305,5 +305,9 @@ namespace EarTrumpet.Interop
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
         public static extern int RegisterWindowMessage(string msg);
+
+        [DllImport("user32.dll", PreserveSig = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetCursorPos(out POINT pt);
     }
 }

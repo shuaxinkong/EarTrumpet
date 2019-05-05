@@ -17,7 +17,8 @@ namespace EarTrumpet.UI.Tray
             _trayViewModel.PropertyChanged += TrayViewModel_PropertyChanged;
 
             _trayIcon = new ShellNotifyIcon(trayViewModel.GetIdentity, trayViewModel.ResetIdentity);
-            _trayIcon.MouseClick += TrayIcon_MouseClick;
+            _trayIcon.MouseClick += OnMouseClick;
+            _trayIcon.MouseWheel += OnMouseWheel;
             _trayIcon.Icon = _trayViewModel.TrayIcon;
             _trayIcon.Text = _trayViewModel.ToolTip;
 
@@ -74,9 +75,14 @@ namespace EarTrumpet.UI.Tray
             }
         }
 
-        private void TrayIcon_MouseClick(object sender, MouseEventArgs e)
+        private void OnMouseWheel(object sender, int e)
         {
-            Trace.WriteLine($"TrayIcon TrayIcon_MouseClick {e.Button}");
+            _trayViewModel.OnMouseWheel(e);
+        }
+
+        private void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            Trace.WriteLine($"TrayIcon OnMouseClick {e.Button}");
 
             if (e.Button == MouseButtons.Left)
             {
@@ -90,6 +96,11 @@ namespace EarTrumpet.UI.Tray
             {
                 _trayViewModel.MiddleClick.Execute(null);
             }
+        }
+
+        public void SetFocus()
+        {
+            _trayIcon.SetFocus();
         }
     }
 }

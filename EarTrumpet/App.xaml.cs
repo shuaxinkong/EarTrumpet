@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace EarTrumpet
 {
@@ -60,10 +61,11 @@ namespace EarTrumpet
             PlaybackDevicesViewModel.Ready += OnMainViewModelReady;
 
             FlyoutViewModel = new FlyoutViewModel(PlaybackDevicesViewModel);
+            FlyoutViewModel.StateChanged += OnFlyoutViewModelStateChanged;
             FlyoutWindow = new FlyoutWindow(FlyoutViewModel);
 
             TrayViewModel = new TrayViewModel(PlaybackDevicesViewModel);
-            TrayViewModel.LeftClick = new RelayCommand(() => FlyoutViewModel.OpenFlyout(FlyoutShowOptions.Pointer));
+            TrayViewModel.LeftClick = new RelayCommand(() => FlyoutViewModel.OpenFlyout(InputType.Mouse));
             TrayViewModel.OpenMixer = new RelayCommand(_mixerWindow.OpenOrBringToFront);
             TrayViewModel.OpenSettings = new RelayCommand(_settingsWindow.OpenOrBringToFront);
             FlyoutWindow.DpiChanged += (_, __) => TrayViewModel.Refresh();
@@ -76,11 +78,21 @@ namespace EarTrumpet
             MaybeShowFirstRunExperience();
         }
 
+        private void OnFlyoutViewModelStateChanged(object sender, object e)
+        {
+            if (FlyoutViewModel.State == FlyoutViewModel.ViewState.Closing_Stage1 &&
+                FlyoutViewModel.LastInput == InputType.Keyboard &&
+                !FlyoutViewModel.IsExpandingOrCollapsing)
+            {
+                _trayIcon.SetFocus();
+            }
+        }
+
         private void OnHotKeyPressed(HotkeyData hotkey)
         {
             if (hotkey.Equals(SettingsService.FlyoutHotkey))
             {
-                FlyoutViewModel.OpenFlyout(FlyoutShowOptions.Keyboard);
+                FlyoutViewModel.OpenFlyout(InputType.Keyboard);
             }
             else if (hotkey.Equals(SettingsService.SettingsHotkey))
             {

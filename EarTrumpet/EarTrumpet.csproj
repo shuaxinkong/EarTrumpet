@@ -130,10 +130,12 @@
     <Compile Include="Extensions\EventBinding\EventBindingExtension.cs" />
     <Compile Include="Extensions\EventBinding\HandledEventBindingExtension.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interop\Helpers\InputHelper.cs" />
     <Compile Include="Interop\Helpers\ShellNotifyIcon.cs" />
     <Compile Include="Interop\Helpers\User32Helper.cs" />
     <Compile Include="Interop\ApplicationResolver.cs" />
     <Compile Include="Interop\NotifyIconData.cs" />
+    <Compile Include="Interop\POINT.cs" />
     <Compile Include="Interop\SndVolSSO.cs" />
     <Compile Include="UI\Behaviors\ButtonEx.cs" />
     <Compile Include="UI\Behaviors\ScrollViewerEx.cs" />
@@ -222,7 +224,6 @@
     <Compile Include="Interop\RECT.cs" />
     <Compile Include="Diagnosis\CircularBufferTraceListener.cs" />
     <Compile Include="Interop\Helpers\ImmersiveSystemColors.cs" />
-    <Compile Include="Interop\Helpers\RawInputListener.cs" />
     <Compile Include="UI\ViewModels\AddonAboutPageViewModel.cs" />
     <Compile Include="UI\ViewModels\AdvertisedCategorySettingsViewModel.cs" />
     <Compile Include="UI\ViewModels\EarTrumpetAboutPageViewModel.cs" />
@@ -247,7 +248,6 @@
     <Compile Include="UI\IconLoadInfo.cs" />
     <Compile Include="UI\MenuItemTemplateSelector.cs" />
     <Compile Include="UI\ViewModels\ContextMenuItem.cs" />
-    <Compile Include="UI\ViewModels\FlyoutShowOptions.cs" />
     <Compile Include="UI\ViewModels\FocusedAppItemViewModel.cs" />
     <Compile Include="UI\ViewModels\FocusedDeviceViewModel.cs" />
     <Compile Include="UI\ViewModels\IAppItemViewModel.cs" />
