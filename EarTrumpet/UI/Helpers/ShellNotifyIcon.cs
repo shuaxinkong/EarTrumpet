@@ -48,7 +48,7 @@ namespace EarTrumpet.UI.Helpers
         public TaskbarIconSource IconSource { get; private set; }
         private string _text;
         private RECT _iconLocation;
-        private POINT _cursorPosition;
+        private System.Drawing.Point _cursorPosition;
         private DispatcherTimer _invalidationTimer;
 
         public ShellNotifyIcon(TaskbarIconSource icon, Func<Guid> getIdentity, Action resetIdentity)
@@ -196,12 +196,8 @@ namespace EarTrumpet.UI.Helpers
             if (Shell32.Shell_NotifyIconGetRect(ref id, out RECT location) == 0)
             {
                 _iconLocation = location;
-
-                if (User32.GetCursorPos(out POINT pt))
-                {
-                    _cursorPosition = pt;
-                    IsCursorWithinNotifyIconBounds();
-                }
+                _cursorPosition = System.Windows.Forms.Cursor.Position;
+                IsCursorWithinNotifyIconBounds();
             }
             else
             {
